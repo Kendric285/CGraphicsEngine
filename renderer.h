@@ -8,13 +8,6 @@ typedef struct {
   SDL_Renderer* renderer;
 } InternalRenderer;
 
-// typedef struct {
-//   Uint8 r;
-//   Uint8 g;
-//   Uint8 b;
-//   Uint8 a;
-// } SDL_Color;
-
 /** 
  * Creates the empty internal renderer
  * @param width Width of the window
@@ -56,5 +49,6 @@ void draw_line_internal(InternalRenderer* i, int x1, int y1, int x2, int y2, SDL
 
 /*adds circle to off-screen buffer*/
 void draw_circle_internal(InternalRenderer* i, int x, int y, int r, SDL_Color color);
+
 
 #endif

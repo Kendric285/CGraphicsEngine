@@ -4,13 +4,17 @@
 #include <math.h>
 
 
-
+typedef struct {
+  int x;
+  int y;
+} Coordinates;
 /** 
- * Converts polar coordinates centered at r to rectangular coordinates
+ * Converts polar coordinates centered at (x,y) to rectangular coordinates
  * 
 */
-int* polar_to_rectangular(int x, int y, int r, double theta){
-  int* res = malloc(sizeof(int) * 2);
+Coordinates polar_to_rectangular(int x, int y, int r, double theta){
+//  int* res = malloc(sizeof(int) * 2);
+  Coordinates res;
   double x_disp;
   double y_disp;
   
@@ -18,16 +22,15 @@ int* polar_to_rectangular(int x, int y, int r, double theta){
   x_disp = r * cos(rad);
   y_disp = r * sin(rad);
 
-  //x_disp = (theta > 90 && theta < 270) ? -x_disp : x_disp;
-  //y_disp = (theta > 180 && theta < 360) ? -y_disp : y_disp;
-
-  res[0] = x + (int)x_disp;
-  res[1] = y + (int)y_disp;
+  res.x = x + (int)x_disp;
+  res.y = y + (int)y_disp;
   return res;
 }
 
 InternalRenderer* create_internal_renderer(int width, int height, char* title){
   InternalRenderer* res = malloc(sizeof(InternalRenderer));
+
+  SDL_Init(SDL_INIT_VIDEO);
 
   SDL_Window* window = SDL_CreateWindow("",0,0,0,0,SDL_WINDOW_HIDDEN);
   SDL_SetWindowSize(window,width,height);
@@ -54,6 +57,7 @@ void clear_internal_renderer(InternalRenderer* i, SDL_Color color){
 
 void present_internal_renderer(InternalRenderer* i){
   SDL_RenderPresent(i->renderer);
+  SDL_Delay(16);
 }
 
 void draw_rect_internal(InternalRenderer* i, int x, int y, int w, int h, SDL_Color color){
@@ -69,10 +73,9 @@ void draw_line_internal(InternalRenderer* i, int x1, int y1, int x2, int y2, SDL
 
 void draw_circle_internal(InternalRenderer* i, int x, int y, int r, SDL_Color color){
   SDL_SetRenderDrawColor(i->renderer,color.r,color.g,color.b,color.a);
-  int increment = (int)(1/r * 180.0 / M_1_PI);
+//  int increment = (int)(1/r * 180.0 / M_1_PI);
   for(double theta = 0; theta < 360; theta+=0.5){
-    int* point = polar_to_rectangular(x,y,r,theta);
-    SDL_RenderDrawPoint(i->renderer, point[0], point[1]);
-    free(point);
+    Coordinates point = polar_to_rectangular(x,y,r,theta);
+    SDL_RenderDrawPoint(i->renderer, point.x, point.y);
   }
 }

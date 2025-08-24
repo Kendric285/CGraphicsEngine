@@ -13,7 +13,7 @@ LDFLAGS = -L/opt/homebrew/opt/sdl2/lib -lSDL2
 TARGET = main
 
 # Source files
-SRC = main.c
+SRC = *.c
 
 # Build target
 all: $(TARGET)
